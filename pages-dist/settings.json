@@ -1,0 +1,9 @@
+{
+  "defaultTarget": "github.com/Cute-Dress/Dress",
+  "proxyPath": "/api/proxy",
+  "cacheLabel": "1 小时",
+  "preferredOrigins": [],
+  "cloudflareOrigins": [],
+  "officialOrigin": "https://github.com",
+  "quickPaths": ["", "/releases", "/archive/refs/heads/main.zip", "/raw/main/README.md"]
+}

@@ -1,0 +1,7 @@
+name = "edgedress-proxy"
+main = "worker.js"
+compatibility_date = "2026-08-30"
+
+[assets]
+directory = "pages-dist"
+binding = "ASSETS"
