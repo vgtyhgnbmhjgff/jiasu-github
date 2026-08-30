@@ -58,7 +58,8 @@ form.addEventListener("submit", async (event) => {
   proxyUrl.searchParams.set("url", target);
   proxyUrl.searchParams.set("config", JSON.stringify({ preferredOrigins: settings.preferredOrigins, cloudflareOrigins: settings.cloudflareOrigins, officialOrigin: settings.officialOrigin }));
   const proxy = proxyUrl.toString();
-  result.hidden = false; document.querySelector("#result-title").textContent = "正在连接边缘节点"; document.querySelector("#edge-node").textContent = "CONNECTING..."; document.querySelector("#http-status").textContent = "-"; document.querySelector("#result-link").href = proxy;
+  const directUrl = new URL(normalized(input.value).replace(/^github\\.com/i, ""), proxyUrl.origin);
+  result.hidden = false; document.querySelector("#result-title").textContent = "正在连接边缘节点"; document.querySelector("#edge-node").textContent = "CONNECTING..."; document.querySelector("#http-status").textContent = "-"; document.querySelector("#result-link").href = directUrl;
   try { const response = await fetch(proxy, { method: "GET", headers: { Range: "bytes=0-0" } }); document.querySelector("#result-title").textContent = response.ok ? "请求已就绪" : "源站返回异常"; document.querySelector("#edge-node").textContent = response.headers.get("cf-ray")?.split("-")[1] || "CLOUDFLARE POP"; document.querySelector("#http-status").textContent = response.status; } catch { document.querySelector("#result-title").textContent = "加速地址已生成"; document.querySelector("#edge-node").textContent = "CLOUDFLARE EDGE"; document.querySelector("#http-status").textContent = "READY"; }
   lucide.createIcons(); result.scrollIntoView({ behavior: "smooth", block: "nearest" });
 });

@@ -19,7 +19,7 @@ npx wrangler deploy
 
 部署命令输出的 workers.dev URL 可直接打开，代理地址为该域名的 `/api/proxy`。如使用 Pages 单独托管页面，再将该地址填入 `pages-dist/config.js`。
 
-代理请求示例：`/api/proxy?url=https%3A%2F%2Fgithub.com%2FCute-Dress%2FDress%2Freleases`
+代理请求示例：`/api/proxy?url=https%3A%2F%2Fgithub.com%2FCute-Dress%2FDress%2Freleases`。也支持直接访问仓库路径：`/Cute-Dress/Dress/tree/master/A`，Worker 会自动转发到 GitHub。
 
 ### 优选地址设置
 
