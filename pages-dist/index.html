@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script src="config.js"></script>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="通过 Cloudflare 边缘节点访问 Cute-Dress/Dress GitHub 仓库" />
+  <title>EdgeDress · GitHub 边缘加速</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" /><link rel="stylesheet" href="styles.css" />
+</head>
+<body><div class="shell">
+<header class="topbar"><a class="brand" href="/"><span class="brand-mark"><i></i><i></i><i></i></span><span>EDGEDRESS</span></a><div class="topbar-meta"><span class="live-dot"></span><span>EDGE NETWORK ONLINE</span><span class="meta-sep"></span><span>只读代理</span></div></header>
+<main>
+<section class="hero"><div class="eyebrow"><span class="eyebrow-line"></span> CLOUDFLARE WORKER × PAGES</div><h1>让 GitHub 仓库<br /><em>抵达更快。</em></h1><p class="hero-copy">从最近的 Cloudflare 边缘节点拉取 Dress，连接到中国大陆时保持稳定、轻量、可控。</p><div class="hero-rule"></div><div class="hero-stats"><div><strong>1</strong><span>允许仓库</span></div><div><strong>POP</strong><span>全球边缘节点</span></div><div><strong>RO</strong><span>只读访问</span></div></div></section>
+<section class="workspace"><div class="panel-head"><div><span class="panel-kicker">01 / REQUEST</span><h2>输入 GitHub 地址</h2></div><span class="lock-label"><i data-lucide="lock-keyhole"></i> 白名单已锁定</span></div>
+<form id="proxy-form" class="request-form"><label for="repo-url">目标 URL</label><div class="url-row"><span class="url-prefix">https://</span><input id="repo-url" name="url" value="github.com/Cute-Dress/Dress" autocomplete="off" spellcheck="false" /><button type="submit"><span>开始加速</span><i data-lucide="arrow-up-right"></i></button></div><div class="form-hint"><i data-lucide="shield-check"></i><span>仅允许 <b>github.com/Cute-Dress/Dress</b> 及其子域名</span><span id="validation" class="validation"></span></div></form>
+<div class="quick-paths"><span class="path-label">快速路径</span><button data-path="">仓库首页</button><button data-path="/releases">Releases</button><button data-path="/archive/refs/heads/main.zip">下载 ZIP</button><button data-path="/raw/main/README.md">Raw 文件</button></div>
+<div id="result" class="result" hidden><div class="result-top"><div><span class="panel-kicker">02 / EDGE RESPONSE</span><h2 id="result-title">请求已就绪</h2></div><span class="status-chip"><i data-lucide="check-circle-2"></i> EDGE HIT</span></div><div class="result-grid"><div class="result-cell"><span>边缘节点</span><strong id="edge-node">等待请求</strong></div><div class="result-cell"><span>状态</span><strong id="http-status">—</strong></div><div class="result-cell"><span>缓存策略</span><strong>1 小时</strong></div></div><a id="result-link" class="open-link" href="#" target="_blank" rel="noreferrer"><span>打开加速地址</span><i data-lucide="external-link"></i></a></div></section>
+<section class="network-band"><div class="network-copy"><span class="panel-kicker">HOW IT MOVES</span><h2>一次请求，三跳抵达。</h2><p>浏览器 → Cloudflare 边缘 → GitHub 源站。Worker 只转发白名单内的资源，并为可缓存响应加上边缘缓存。</p></div><div class="route"><div class="route-node active"><span class="node-ring"></span><b>YOU</b><small>中国大陆</small></div><div class="route-line"><span></span></div><div class="route-node"><span class="node-ring"></span><b>EDGE</b><small>Cloudflare POP</small></div><div class="route-line"><span></span></div><div class="route-node"><span class="node-ring"></span><b>ORIGIN</b><small>GitHub</small></div></div></section>
+</main><footer><span>EDGEDRESS / PRIVATE GATEWAY</span><span>Designed for <a href="https://github.com/Cute-Dress/Dress" target="_blank" rel="noreferrer">Cute-Dress/Dress</a></span></footer></div><script src="https://unpkg.com/lucide@latest"></script><script src="app.js"></script></body></html>
