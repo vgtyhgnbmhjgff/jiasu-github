@@ -1,4 +1,4 @@
-const ALLOWED_HOST = /^(?:[a-z0-9-]+\.)*github\.com$/i;
+const ALLOWED_HOST = /^(?:github\.com|[a-z0-9-]+\.github\.com|[a-z0-9-]+\.githubusercontent\.com)$/i;
 const ALLOWED_PATH = /^\/Cute-Dress\/Dress(?:\/.*)?$/i;
 const DEFAULT_SETTINGS = { preferredOrigins: [], cloudflareOrigins: [], officialOrigin: "https://github.com" };
 
@@ -22,13 +22,13 @@ export default { async fetch(request, env) {
   const raw = incoming.searchParams.get("url");
   if (!raw) return Response.json({ error: "Missing url" }, { status: 400, headers: cors });
   let target; try { target = new URL(raw); } catch { return Response.json({ error: "Invalid url" }, { status: 400, headers: cors }); }
-  if (target.protocol !== "https:" || !allowedTarget(target)) return Response.json({ error: "Only github.com/Cute-Dress/Dress and GitHub subdomains are allowed" }, { status: 403, headers: cors });
+  if (target.protocol !== "https:" || !allowedTarget(target)) return Response.json({ error: "Only https://github.com/Cute-Dress/Dress is allowed" }, { status: 403, headers: cors });
   const config = await settingsFromAssets(request, env);
   try {
     const clientConfig = JSON.parse(incoming.searchParams.get("config") || "{}");
     Object.assign(config, clientConfig);
   } catch {}
-  const origins = [...(Array.isArray(config.preferredOrigins) ? config.preferredOrigins : []), ...(Array.isArray(config.cloudflareOrigins) ? config.cloudflareOrigins : []), config.officialOrigin].map(originUrl).filter(Boolean);
+  const origins = [target.origin, ...(Array.isArray(config.preferredOrigins) ? config.preferredOrigins : []), ...(Array.isArray(config.cloudflareOrigins) ? config.cloudflareOrigins : []), config.officialOrigin].map(originUrl).filter(Boolean);
   const tried = new Set();
   const headers = new Headers(request.headers); headers.delete("Host"); headers.set("User-Agent", "EdgeDress/1.0");
   let upstream;

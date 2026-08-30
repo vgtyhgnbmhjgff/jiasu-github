@@ -1,5 +1,5 @@
 const style = document.createElement("link"); style.rel = "stylesheet"; style.href = "settings.css"; document.head.append(style);
-const DEFAULTS = { defaultTarget: "github.com/Cute-Dress/Dress", proxyPath: "/api/proxy", cacheLabel: "1 小时", preferredOrigins: [], cloudflareOrigins: [], officialOrigin: "https://github.com", quickPaths: ["", "/releases", "/archive/refs/heads/main.zip", "/raw/main/README.md"] };
+const DEFAULTS = { defaultTarget: "github.com/Cute-Dress/Dress", proxyPath: "/api/proxy", cacheLabel: "1 小时", preferredOrigins: [], cloudflareOrigins: [], officialOrigin: "https://github.com", quickPaths: ["", "/releases", "/archive/refs/heads/main.zip", "/raw/main/README.md"], latestCommitPath: "/commits" };
 const ALLOWED = /^github\.com\/Cute-Dress\/Dress(?:[/?#].*)?$/i;
 const input = document.querySelector("#repo-url");
 const validation = document.querySelector("#validation");
@@ -23,7 +23,7 @@ function setValidation() {
 function renderSettings() {
   const section = document.createElement("section");
   section.className = "settings-panel";
-  section.innerHTML = `<div class="panel-head"><div><span class="panel-kicker">SETTINGS / JSON</span><h2>参数设置</h2></div><span class="lock-label">本地保存</span></div><p class="settings-hint">可编辑 JSON 文本，修改后点击应用。代理仍只允许 Cute-Dress/Dress。</p><textarea id="settings-json" spellcheck="false"></textarea><div class="settings-actions"><button id="settings-apply" type="button">应用设置</button><button id="settings-reset" type="button">恢复默认</button><span id="settings-status"></span></div>`;
+  section.innerHTML = `<div class="panel-head"><div><span class="panel-kicker">SETTINGS / JSON</span><h2>参数设置</h2></div><span class="lock-label">本地保存</span></div><p class="settings-hint">变量：preferredOrigins（自定义优选）、cloudflareOrigins（Cloudflare 优选）、officialOrigin（官方回退）。只能访问 github.com/Cute-Dress/Dress。</p><textarea id="settings-json" spellcheck="false"></textarea><div class="settings-actions"><button id="settings-apply" type="button">应用设置</button><button id="settings-reset" type="button">恢复默认</button><span id="settings-status"></span></div>`;
   document.querySelector(".workspace").append(section);
   const editor = section.querySelector("#settings-json");
   const status = section.querySelector("#settings-status");
@@ -39,10 +39,14 @@ function renderSettings() {
   };
   section.querySelector("#settings-reset").onclick = () => { settings = { ...DEFAULTS }; localStorage.removeItem("edgedress-settings"); write(); input.value = settings.defaultTarget; setValidation(); status.textContent = "已恢复"; };
 }
+async function showCommitStatus() {
+  const status = document.createElement("p"); status.className = "settings-hint"; status.id = "commit-status"; status.textContent = "最新提交：目前无法检索最新的提交"; document.querySelector(".workspace").prepend(status);
+  try { const endpoint = new URL(proxyEndpoint(window.EDGEDRESS_PROXY_URL), location.href); endpoint.searchParams.set("url", "https://github.com/Cute-Dress/Dress/commits"); const response = await fetch(endpoint); if (response.ok) status.textContent = "最新提交：已连接 GitHub 提交页面"; } catch {}
+}
 async function loadSettings() {
   try { settings = { ...settings, ...(await (await fetch("settings.json", { cache: "no-store" })).json()) }; } catch {}
   try { settings = { ...settings, ...JSON.parse(localStorage.getItem("edgedress-settings") || "{}") }; } catch {}
-  input.value = settings.defaultTarget; setValidation(); renderSettings();
+  input.value = settings.defaultTarget; setValidation(); renderSettings(); showCommitStatus();
 }
 
 input.addEventListener("input", setValidation);
