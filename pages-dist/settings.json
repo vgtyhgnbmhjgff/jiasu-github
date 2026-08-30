@@ -1,0 +1,6 @@
+{
+  "defaultTarget": "github.com/Cute-Dress/Dress",
+  "proxyPath": "/api/proxy",
+  "cacheLabel": "1 小时",
+  "quickPaths": ["", "/releases", "/archive/refs/heads/main.zip", "/raw/main/README.md"]
+}
