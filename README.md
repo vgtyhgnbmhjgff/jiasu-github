@@ -47,11 +47,6 @@ Worker 只在 `/_gh` 收到图片请求时缓存图片，不会预热或缓存�
 | KV Namespace | `edgedress-image-cache-kv` | `IMAGE_CACHE_KV` |
 | D1 Database | `edgedress-cache` | `IMAGE_CACHE_DB` |
 
-R2 保存图片正文，KV 保存 24 MB 以内的小图片副本，D1 只保存会话索引。图形化绑定完成后，不需要把 ID 写进代码。首次创建 D1 后执行一次初始化：
-
-```bash
-npx wrangler d1 execute edgedress-cache --remote --file=schema.sql
-npx wrangler deploy
-```
+R2 保存图片正文，KV 保存 24 MB 以内的小图片副本，D1 只保存会话索引。使用 GitHub 集成部署时，不需要在本地运行 Wrangler。首次创建 D1 后，进入 Cloudflare Dashboard 的 D1 数据库，打开 Console / 控制台，将 `schema.sql` 的内容粘贴并执行一次。随后推送代码到 GitHub，Cloudflare 会自动部署；绑定会保留在 Worker 配置中。
 
 如果暂时未配置这些绑定，图片仍会直接从 GitHub 转发，但不会写入持久缓存。
