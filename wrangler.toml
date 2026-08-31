@@ -5,3 +5,16 @@ compatibility_date = "2026-08-30"
 [assets]
 directory = "pages-dist"
 binding = "ASSETS"
+
+# Configure these bindings in Cloudflare before deploying. The Worker keeps
+# image bodies in R2, mirrors small images in KV, and tracks session keys in D1.
+# [[r2_buckets]]
+# binding = "IMAGE_CACHE_R2"
+# bucket_name = "edgedress-image-cache"
+# [[kv_namespaces]]
+# binding = "IMAGE_CACHE_KV"
+# id = "<your-kv-namespace-id>"
+# [[d1_databases]]
+# binding = "IMAGE_CACHE_DB"
+# database_name = "edgedress-cache"
+# database_id = "<your-d1-database-id>"
