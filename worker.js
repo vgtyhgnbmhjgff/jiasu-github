@@ -28,7 +28,7 @@ export default { async fetch(request, env) {
   for (const origin of origins) {
     if (tried.has(origin.origin)) continue; tried.add(origin.origin);
     const candidate = new URL(target.pathname + target.search, origin);
-    try { const candidateHeaders = new Headers(headers); candidateHeaders.set("Host", target.host); if (directPath) candidateHeaders.delete("Range"); upstream = await fetch(new Request(candidate, { method: request.method === "HEAD" ? "HEAD" : "GET", headers: candidateHeaders, redirect: "follow" }), { cf: { cacheEverything: true, cacheTtl: 3600 } }); if (upstream.status >= 200 && upstream.status < 400) break; } catch {}
+    try { const candidateHeaders = new Headers(headers); candidateHeaders.set("Host", target.host); candidateHeaders.delete("Range"); upstream = await fetch(new Request(candidate, { method: request.method === "HEAD" ? "HEAD" : "GET", headers: candidateHeaders, redirect: "follow" }), { cf: { cacheEverything: true, cacheTtl: 3600 } }); if (upstream.status >= 200 && upstream.status < 400) break; } catch {}
   }
   if (!upstream) return Response.json({ error: "All configured origins unavailable" }, { status: 502, headers: cors });
   const responseHeaders = new Headers(upstream.headers); responseHeaders.set("Cache-Control", "public, max-age=3600, s-maxage=3600"); Object.entries(cors).forEach(([key, value]) => responseHeaders.set(key, value)); return new Response(upstream.body, { status: upstream.status, headers: responseHeaders });
